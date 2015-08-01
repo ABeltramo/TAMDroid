@@ -6,19 +6,22 @@ package com.tam;
  * Copyright (c) 2015 Alessandro Beltramo
  * https://raw.githubusercontent.com/ABeltramo/TAM-Android/master/LICENSE
  */
-public class Performer implements TimeSensitiveEntity {
+
+public class Performer extends TimeSensitiveEntity {
     private PerformerTask task;
     protected TimeSensitiveEntity parent;
+    private boolean enable = false;
 
     public Performer(TimeSensitiveEntity parent, PerformerTask task){
+        super(parent);
         this.task = task;
-        this.parent = parent;
-        parent.addChild(this); //Aggiungo nella lista del padre questo oggetto come figlio
     }
 
-    public void tick(){ task.perform(); }
+    public void tick() {
+        if (isEnable()) { //Se il perf è abilitato
+            task.perform();
+        }
+    }
 
-    public TimeSensitiveEntity getParent(){ return parent; }
-
-    public void addChild(TimeSensitiveEntity child){}
+    protected void addChild(TimeSensitiveEntity child){}
 }

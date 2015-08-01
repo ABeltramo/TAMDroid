@@ -6,6 +6,6 @@ package com.tam;
  * Copyright (c) 2015 Alessandro Beltramo
  * https://raw.githubusercontent.com/ABeltramo/TAM-Android/master/LICENSE
  */
-public interface PerformerTask {
-    void perform();
+public abstract class PerformerTask {
+    abstract void perform();
 }

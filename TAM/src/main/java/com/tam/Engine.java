@@ -11,10 +11,10 @@ import java.util.ArrayList;
 public class Engine {
     private ArrayList<TimeSensitiveEntity> timeEntities;
     private ArrayList<Performer> performers;
-    private TimeSensitiveEntity groundClock;
+    private TimeSensitiveEntity groundTimer;
 
-    Engine(TimeSensitiveEntity groundClock){
-        this.groundClock = groundClock;
+    Engine(TimeSensitiveEntity groundTimer){
+        this.groundTimer = groundTimer;
     }
 
     /*

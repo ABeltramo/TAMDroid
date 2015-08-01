@@ -9,31 +9,30 @@ package com.tam;
 
 import java.util.ArrayList;
 
-public class Timer implements TimeSensitiveEntity{
+public class Timer extends TimeSensitiveEntity{
     private long duration;
     protected long curCounter;
-    protected TimeSensitiveEntity parentTimer;
-    private ArrayList<TimeSensitiveEntity> childTimer;
 
     /*
      * CONSTRUCTOR
      */
     public Timer(TimeSensitiveEntity parent, long duration){
+        super(parent);
         curCounter = 0;
         this.duration = duration;
-        childTimer = new ArrayList<>();
-        parent.addChild(this); //Aggiungo nella lista del padre questo oggetto come figlio
     }
 
     /*
      * Tick
      */
     public void tick(){
-        curCounter++;
-        if(curCounter >= duration){
-            curCounter = 0;
-            for(TimeSensitiveEntity child:childTimer){  // Per ogni timer figlio
-                child.tick();                           // Eseguo il tick
+        if(isEnable()) { //Se il timer è abilitato
+            curCounter++;
+            if (curCounter >= duration) {
+                curCounter = 0;
+                for (TimeSensitiveEntity child : this.child) {  // Per ogni timer figlio
+                    child.tick();                               // Eseguo il tick
+                }
             }
         }
     }
@@ -41,9 +40,6 @@ public class Timer implements TimeSensitiveEntity{
     /*
     * GETTER AND SETTER
     */
-    public TimeSensitiveEntity getParent(){ return parentTimer; }
-
-    public void addChild(TimeSensitiveEntity child) { this.childTimer.add(child); }
 
     public long getDuration() {
         return duration;
