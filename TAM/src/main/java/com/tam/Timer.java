@@ -22,6 +22,7 @@ public class Timer implements TimeSensitiveEntity{
         curCounter = 0;
         this.duration = duration;
         childTimer = new ArrayList<>();
+        parent.addChild(this); //Aggiungo nella lista del padre questo oggetto come figlio
     }
 
     /*
@@ -40,9 +41,9 @@ public class Timer implements TimeSensitiveEntity{
     /*
     * GETTER AND SETTER
     */
-    public void addChild(TimeSensitiveEntity child) {
-        this.childTimer.add(child);
-    }
+    public TimeSensitiveEntity getParent(){ return parentTimer; }
+
+    public void addChild(TimeSensitiveEntity child) { this.childTimer.add(child); }
 
     public long getDuration() {
         return duration;

@@ -9,4 +9,6 @@ package com.tam;
 
 public interface TimeSensitiveEntity {
     void tick();
+    TimeSensitiveEntity getParent();
+    void addChild(TimeSensitiveEntity child);
 }

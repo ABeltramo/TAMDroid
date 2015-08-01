@@ -8,12 +8,17 @@ package com.tam;
  */
 public class Performer implements TimeSensitiveEntity {
     private PerformerTask task;
+    protected TimeSensitiveEntity parent;
 
-    public Performer(PerformerTask task){
+    public Performer(TimeSensitiveEntity parent, PerformerTask task){
         this.task = task;
+        this.parent = parent;
+        parent.addChild(this); //Aggiungo nella lista del padre questo oggetto come figlio
     }
 
-    public void tick(){
-        task.perform();
-    }
+    public void tick(){ task.perform(); }
+
+    public TimeSensitiveEntity getParent(){ return parent; }
+
+    public void addChild(TimeSensitiveEntity child){}
 }
