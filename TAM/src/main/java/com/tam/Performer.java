@@ -10,7 +10,6 @@ package com.tam;
 public class Performer extends TimeSensitiveEntity {
     private PerformerTask task;
     protected TimeSensitiveEntity parent;
-    private boolean enable = false;
 
     public Performer(TimeSensitiveEntity parent, PerformerTask task){
         super(parent);
@@ -22,6 +21,4 @@ public class Performer extends TimeSensitiveEntity {
             task.perform();
         }
     }
-
-    protected void addChild(TimeSensitiveEntity child){}
 }

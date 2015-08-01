@@ -9,11 +9,9 @@ import java.util.ArrayList;
  * https://raw.githubusercontent.com/ABeltramo/TAM-Android/master/LICENSE
  */
 public class Engine {
-    private ArrayList<TimeSensitiveEntity> timeEntities;
-    private ArrayList<Performer> performers;
-    private TimeSensitiveEntity groundTimer;
+    private Timer groundTimer;
 
-    Engine(TimeSensitiveEntity groundTimer){
+    Engine(Timer groundTimer){
         this.groundTimer = groundTimer;
     }
 
@@ -22,22 +20,27 @@ public class Engine {
      */
 
     public void start(){
-
+        groundTimer.enable();
     }
 
-    public void stop(){}
+    public void stop(){
+        this.pause();
+        this.reset();
+    }
 
-    public void pause(){}
+    public void pause(){
+        groundTimer.disable();
+    }
 
-    public void resume(){}
+    public void resume(){
+        groundTimer.enable();
+    }
 
-    public void reset(){}
+    public void reset(){
+        groundTimer.reset();
+    }
 
-    public void slowDown(long time){}
-
-    public void speedUp(long time){}
-
-    public void addTimeEntity(TimeSensitiveEntity timeEntities) {
-        this.timeEntities.add(timeEntities);
+    public void setSpeed(long speed){
+        this.groundTimer.setDuration(speed);
     }
 }

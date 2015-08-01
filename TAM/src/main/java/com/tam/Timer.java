@@ -48,4 +48,8 @@ public class Timer extends TimeSensitiveEntity{
     public void setDuration(long duration) {
         this.duration = duration;
     }
+
+    public void reset(){
+        curCounter = 0;
+    }
 }
