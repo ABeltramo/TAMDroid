@@ -16,7 +16,8 @@ public abstract class TimeSensitiveEntity {
 
     TimeSensitiveEntity(TimeSensitiveEntity parent){
         this.parent = parent;
-        parent.addChild(this); //Aggiungo nella lista del padre questo oggetto come figlio
+        if(parent != null)
+            parent.addChild(this); //Aggiungo nella lista del padre questo oggetto come figlio
         child = new ArrayList<>();
     }
 
@@ -25,6 +26,8 @@ public abstract class TimeSensitiveEntity {
     private void addChild(TimeSensitiveEntity child){
         this.child.add(child);
     }
+
+    public ArrayList<TimeSensitiveEntity> getChild() { return this.child; }
 
     public TimeSensitiveEntity getParent(){ return parent; }
 
