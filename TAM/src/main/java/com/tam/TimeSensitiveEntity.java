@@ -22,7 +22,7 @@ public abstract class TimeSensitiveEntity {
 
     abstract void tick();
 
-    public TimeSensitiveEntity getParent(){ return parent; }
+    public Timer getParent(){ return parent; }
 
     public void enable() {isEnabled = true;}
 

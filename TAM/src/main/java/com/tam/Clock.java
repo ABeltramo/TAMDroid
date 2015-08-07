@@ -11,8 +11,8 @@ public class Clock extends Timer {
     /*
     * Constructor
     */
-    public Clock(long duration){
-        super(null,duration);
+    public Clock(Timer parent, long duration){
+        super(parent,duration);
     }
 
     /*

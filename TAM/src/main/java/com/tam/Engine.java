@@ -1,5 +1,9 @@
 package com.tam;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -8,19 +12,72 @@ import java.util.ArrayList;
  * Copyright (c) 2015 Alessandro Beltramo
  * https://raw.githubusercontent.com/ABeltramo/TAM-Android/master/LICENSE
  */
-public class Engine {
+public class Engine extends TimeSensitiveEntity{
+    /*
+     * Exceptions
+     */
+    public class JSONNullObject extends RuntimeException{}
+    public class JSONBadFormed extends RuntimeException{}
+
+    private JSONObject options;
     private Timer groundTimer;
 
-    Engine(Timer groundTimer){
-        this.groundTimer = groundTimer;
+    Engine(Timer realTimer, JSONObject startOptions){
+        super(realTimer);
+        this.options = startOptions;
+        setup();
     }
 
     /*
+     * SETUP:
+     * Read the JSON file and create the istance
+     */
+    private void setup() {
+        if (options == null)
+            throw new JSONNullObject();
+        //Create the ground Timer
+        try{
+            Timer gt = new Timer(getParent(),options.getJSONObject("GroundTimer").getLong("duration"));
+            createChild(gt,options.getJSONObject("GroundTimer"));
+        }
+        catch (Exception error){
+            throw new JSONBadFormed();
+        }
+    }
+
+    private void createChild(Timer parent,JSONObject currentTimer){
+        try{
+            JSONArray child = currentTimer.getJSONArray("child");
+            for(int i=0;i<child.length();i++){ //Iterate through child
+                JSONObject obj = child.getJSONObject(i);
+                if(obj.has("Timer")){   //Create a timer
+                    Timer t = new Timer(parent,obj.getLong("duration"));
+                    createChild(t,obj); //Recursive step
+                }
+                else if(obj.has("Performer")){ //Create a performer
+                    Performer p = new Performer(parent,null);
+                    //No recursion here.
+                }
+            }
+        }
+        catch (JSONException error){
+            throw new JSONBadFormed();
+        }
+    }
+
+    /*
+     * Tick
+     */
+    public void tick(){
+
+    }
+
+     /*
      * METODI FONDAMENTALI
      */
 
     public void start(){
-        groundTimer.enable();
+        getParent().enable();
     }
 
     public void stop(){
@@ -29,18 +86,18 @@ public class Engine {
     }
 
     public void pause(){
-        groundTimer.disable();
+        getParent().disable();
     }
 
     public void resume(){
-        groundTimer.enable();
+        getParent().enable();
     }
 
     public void reset(){
-        groundTimer.reset();
+        getParent().reset();
     }
 
     public void setSpeed(long speed){
-        this.groundTimer.setDuration(speed);
+        this.getParent().setDuration(speed);
     }
 }
