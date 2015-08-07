@@ -4,8 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 /**
  * Created by ABeltramo <beltramo.ale@gmail.com> on 01/08/15.
  * The MIT License (MIT)
@@ -18,6 +16,7 @@ public class Engine extends TimeSensitiveEntity{
      */
     public class JSONNullObject extends RuntimeException{}
     public class JSONBadFormed extends RuntimeException{}
+    public class PerformerTaskNotFound extends RuntimeException{}
 
     private JSONObject options;
     private Timer groundTimer;
@@ -40,6 +39,9 @@ public class Engine extends TimeSensitiveEntity{
             Timer gt = new Timer(getParent(),options.getJSONObject("GroundTimer").getLong("duration"));
             createChild(gt,options.getJSONObject("GroundTimer"));
         }
+        catch (PerformerTaskNotFound error){
+            throw error;
+        }
         catch (Exception error){
             throw new JSONBadFormed();
         }
@@ -51,17 +53,23 @@ public class Engine extends TimeSensitiveEntity{
             for(int i=0;i<child.length();i++){ //Iterate through child
                 JSONObject obj = child.getJSONObject(i);
                 if(obj.has("Timer")){   //Create a timer
+                    obj = obj.getJSONObject("Timer");
                     Timer t = new Timer(parent,obj.getLong("duration"));
                     createChild(t,obj); //Recursive step
                 }
                 else if(obj.has("Performer")){ //Create a performer
-                    Performer p = new Performer(parent,null);
+                    obj = obj.getJSONObject("Performer");
+                    PerformerTask t = (PerformerTask) Class.forName(obj.getString("taskClass")).newInstance();
+                    Performer p = new Performer(parent,t);
                     //No recursion here.
                 }
             }
         }
         catch (JSONException error){
             throw new JSONBadFormed();
+        }
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            throw new PerformerTaskNotFound();
         }
     }
 

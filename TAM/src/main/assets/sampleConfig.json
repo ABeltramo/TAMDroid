@@ -1,0 +1,27 @@
+{
+  "GroundTimer":{
+    "duration":1,
+    "child":[{
+      "Timer":{
+        "duration":1,
+        "child":[{
+          "Performer":{
+            "taskClass":"task"
+          }
+        }]
+      },
+      "Timer":{
+        "duration" : 3,
+        "child" : [{
+          "Performer":{
+            "taskClass":"task"
+          },
+          "Timer" : {
+            "duration" : 10,
+            "child" : []
+          }
+        }]
+      }
+    }]
+  }
+}

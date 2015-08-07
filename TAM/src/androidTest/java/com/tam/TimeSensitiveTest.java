@@ -4,7 +4,10 @@ import android.app.Application;
 import android.test.ApplicationTestCase;
 
 /**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
+ * Created by ABeltramo <beltramo.ale@gmail.com> on 01/08/15.
+ * The MIT License (MIT)
+ * Copyright (c) 2015 Alessandro Beltramo
+ * https://raw.githubusercontent.com/ABeltramo/TAM-Android/master/LICENSE
  */
 public class TimeSensitiveTest extends ApplicationTestCase<Application> {
     public TimeSensitiveTest() {super(Application.class);}
