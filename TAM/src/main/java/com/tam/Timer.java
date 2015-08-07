@@ -12,14 +12,16 @@ import java.util.ArrayList;
 public class Timer extends TimeSensitiveEntity{
     private long duration;
     protected long curCounter;
+    protected ArrayList<TimeSensitiveEntity> child;
 
     /*
      * CONSTRUCTOR
      */
-    public Timer(TimeSensitiveEntity parent, long duration){
+    public Timer(Timer parent, long duration){
         super(parent);
         curCounter = 0;
         this.duration = duration;
+        child = new ArrayList<>();
     }
 
     /*
@@ -36,6 +38,12 @@ public class Timer extends TimeSensitiveEntity{
             }
         }
     }
+
+    public void addChild(TimeSensitiveEntity child){
+        this.child.add(child);
+    }
+
+    public ArrayList<TimeSensitiveEntity> getChild() { return this.child; }
 
     /*
     * GETTER AND SETTER

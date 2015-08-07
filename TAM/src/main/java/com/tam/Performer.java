@@ -9,9 +9,8 @@ package com.tam;
 
 public class Performer extends TimeSensitiveEntity {
     private PerformerTask task;
-    protected TimeSensitiveEntity parent;
 
-    public Performer(TimeSensitiveEntity parent, PerformerTask task){
+    public Performer(Timer parent, PerformerTask task){
         super(parent);
         this.task = task;
     }

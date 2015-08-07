@@ -11,23 +11,16 @@ import java.util.ArrayList;
 
 public abstract class TimeSensitiveEntity {
     private boolean isEnabled = true;
-    protected TimeSensitiveEntity parent;
-    protected ArrayList<TimeSensitiveEntity> child;
+    protected Timer parent;
 
-    TimeSensitiveEntity(TimeSensitiveEntity parent){
+
+    TimeSensitiveEntity(Timer parent){
         this.parent = parent;
         if(parent != null)
             parent.addChild(this); //Aggiungo nella lista del padre questo oggetto come figlio
-        child = new ArrayList<>();
     }
 
     abstract void tick();
-
-    private void addChild(TimeSensitiveEntity child){
-        this.child.add(child);
-    }
-
-    public ArrayList<TimeSensitiveEntity> getChild() { return this.child; }
 
     public TimeSensitiveEntity getParent(){ return parent; }
 
