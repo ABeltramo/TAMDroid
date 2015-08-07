@@ -4,6 +4,7 @@ import android.app.Application;
 import android.test.ApplicationTestCase;
 import android.test.InstrumentationTestCase;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class EngineTest extends InstrumentationTestCase {
      * setUp():
      * Open file and read JSON
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("all")
     private String loadJSONFromAsset(String fileName) {
         String json;
         try {
@@ -69,5 +70,50 @@ public class EngineTest extends InstrumentationTestCase {
             ex = e;
         }
         assertNull(ex); //I expect no exception were generated
+    }
+
+    @SuppressWarnings("all")
+    public void testEngineErrors(){
+        // 1° test
+
+        Exception ex = null;
+        try{
+            Engine en = new Engine(null,new JSONObject(loadJSONFromAsset("errorEmpty.json")));
+        }
+        catch (JSONException e){
+            ex = e;
+        }
+        catch (Exception e){
+
+        }
+        assertNotNull(ex);
+
+        // 2° test
+
+        ex = null;
+        try{
+            Engine en = new Engine(null,new JSONObject(loadJSONFromAsset("errorBadFormed.json")));
+        }
+        catch (Engine.JSONBadFormed e){
+            ex = e;
+        }
+        catch (Exception e){
+
+        }
+        assertNotNull(ex);
+
+        // 3° test
+
+        ex = null;
+        try{
+            Engine en = new Engine(null,new JSONObject(loadJSONFromAsset("errorNoTask.json")));
+        }
+        catch (Engine.PerformerTaskNotFound e){
+            ex = e;
+        }
+        catch (Exception e){
+        }
+        assertNotNull(ex);
+
     }
 }

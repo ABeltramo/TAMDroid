@@ -21,7 +21,7 @@ public class Engine extends TimeSensitiveEntity{
     private JSONObject options;
     private Timer groundTimer;
 
-    Engine(Timer realTimer, JSONObject startOptions){
+    Engine(Timer realTimer, JSONObject startOptions) throws Exception{
         super(realTimer);
         this.options = startOptions;
         setup();
@@ -31,20 +31,12 @@ public class Engine extends TimeSensitiveEntity{
      * SETUP:
      * Read the JSON file and create the istance
      */
-    private void setup() {
+    private void setup() throws Exception{
         if (options == null)
             throw new JSONNullObject();
         //Create the ground Timer
-        try{
-            Timer gt = new Timer(getParent(),options.getJSONObject("GroundTimer").getLong("duration"));
-            createChild(gt,options.getJSONObject("GroundTimer"));
-        }
-        catch (PerformerTaskNotFound error){
-            throw error;
-        }
-        catch (Exception error){
-            throw new JSONBadFormed();
-        }
+        Timer gt = new Timer(getParent(),options.getJSONObject("GroundTimer").getLong("duration"));
+        createChild(gt,options.getJSONObject("GroundTimer"));
     }
 
     private void createChild(Timer parent,JSONObject currentTimer){
@@ -62,6 +54,9 @@ public class Engine extends TimeSensitiveEntity{
                     PerformerTask t = (PerformerTask) Class.forName(obj.getString("taskClass")).newInstance();
                     Performer p = new Performer(parent,t);
                     //No recursion here.
+                }
+                else{
+                    throw new JSONBadFormed();
                 }
             }
         }
