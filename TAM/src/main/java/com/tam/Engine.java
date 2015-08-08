@@ -24,6 +24,7 @@ public class Engine extends TimeSensitiveEntity{
     Engine(Timer realTimer, JSONObject startOptions) throws Exception{
         super(realTimer);
         this.options = startOptions;
+        this.disable(); //Engine start stopped
         setup();
     }
 
@@ -35,10 +36,14 @@ public class Engine extends TimeSensitiveEntity{
         if (options == null)
             throw new JSONNullObject();
         //Create the ground Timer
-        Timer gt = new Timer(getParent(),options.getJSONObject("GroundTimer").getLong("duration"));
-        createChild(gt,options.getJSONObject("GroundTimer"));
+        groundTimer = new Timer(getParent(),options.getJSONObject("GroundTimer").getLong("duration"));
+        createChild(groundTimer, options.getJSONObject("GroundTimer"));
     }
 
+    /*
+     * createChild
+     * Recursively read the JSONObject and create instance of the objects
+     */
     private void createChild(Timer parent,JSONObject currentTimer){
         try{
             JSONArray child = currentTimer.getJSONArray("child");
@@ -72,35 +77,35 @@ public class Engine extends TimeSensitiveEntity{
      * Tick
      */
     public void tick(){
-
+        if(isEnable())
+            groundTimer.tick(); //tick propagation
     }
 
      /*
-     * METODI FONDAMENTALI
-     */
+      * basic control methods
+      */
 
-    public void start(){
-        getParent().enable();
-    }
+    public void start(){ this.enable(); }
 
     public void stop(){
         this.pause();
         this.reset();
     }
 
-    public void pause(){
-        getParent().disable();
-    }
+    public void pause(){ this.disable(); }
 
     public void resume(){
-        getParent().enable();
+        this.enable();
     }
 
     public void reset(){
-        getParent().reset();
+        groundTimer.reset();
     }
 
-    public void setSpeed(long speed){
-        this.getParent().setDuration(speed);
-    }
+    public void setSpeed(long speed){ groundTimer.setDuration(speed); }
+
+    /*
+     * Getter & setters
+     */
+    public Timer getGroundTimer(){return groundTimer;}
 }

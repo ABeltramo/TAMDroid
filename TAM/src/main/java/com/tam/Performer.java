@@ -20,4 +20,6 @@ public class Performer extends TimeSensitiveEntity {
             task.perform();
         }
     }
+
+    public PerformerTask getTask(){ return task; }
 }

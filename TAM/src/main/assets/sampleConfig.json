@@ -1,27 +1,33 @@
 {
   "GroundTimer":{
     "duration":1,
-    "child":[{
+    "child":
+    [{
       "Timer":{
         "duration":1,
         "child":[{
           "Performer":{
-            "taskClass":"task"
+            "taskClass":"com.tam.ExampleTask"
           }
-        }]
+        }]}
       },
-      "Timer":{
+      {
+        "Timer":{
         "duration" : 3,
-        "child" : [{
+        "child" :
+        [{
           "Performer":{
-            "taskClass":"task"
+              "taskClass":"com.tam.ExampleTask"
+            }
           },
-          "Timer" : {
-            "duration" : 10,
-            "child" : []
+          {
+            "Timer": {
+              "duration": 10,
+              "child": []
+            }
           }
-        }]
+        ]}
       }
-    }]
+    ]
   }
 }

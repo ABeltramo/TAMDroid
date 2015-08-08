@@ -12,26 +12,13 @@ import android.test.ApplicationTestCase;
 public class TimeSensitiveTest extends ApplicationTestCase<Application> {
     public TimeSensitiveTest() {super(Application.class);}
 
-
-    /*
-     * Redefinition of PerformerTask
-     * if hasCalled = true -> the Performer has performed
-     */
-    class PFT extends PerformerTask{
-        public boolean hasCalled = false;
-
-        void perform() {
-            hasCalled = true;
-        }
-    }
-
     Timer t1;
     Timer t2;
     Timer t3;
     Performer p1;
     Performer p2;
-    PFT taskP1;
-    PFT taskP2;
+    ExampleTask exampleTaskP1;
+    ExampleTask exampleTaskP2;
 
     //Istantiate a basic TimeEntity hierarchy
     public void setUp() throws Exception {
@@ -41,10 +28,10 @@ public class TimeSensitiveTest extends ApplicationTestCase<Application> {
         t1 = new Timer(null,1);
         t2 = new Timer(t1,3);
         t3 = new Timer(t1,2);
-        taskP1 = new PFT();
-        p1 = new Performer(t2,taskP1);
-        taskP2 = new PFT();
-        p2 = new Performer(t3,taskP2);
+        exampleTaskP1 = new ExampleTask();
+        p1 = new Performer(t2, exampleTaskP1);
+        exampleTaskP2 = new ExampleTask();
+        p2 = new Performer(t3, exampleTaskP2);
     }
 
     public void testTimeEntityHierarchy(){
@@ -62,31 +49,31 @@ public class TimeSensitiveTest extends ApplicationTestCase<Application> {
     }
 
     public void testPerformerPerform(){
-        assertEquals(taskP2.hasCalled,false);
+        assertEquals(exampleTaskP2.hasCalled,false);
         p2.tick();
-        assertEquals(taskP2.hasCalled,true);
+        assertEquals(exampleTaskP2.hasCalled,true);
     }
 
     public void testTimerPerf(){
-        assertEquals(taskP2.hasCalled, false);
-        assertEquals(taskP1.hasCalled, false);
+        assertEquals(exampleTaskP2.hasCalled, false);
+        assertEquals(exampleTaskP1.hasCalled, false);
         t1.tick();
-        assertEquals(taskP2.hasCalled, false);
-        assertEquals(taskP1.hasCalled, false);
+        assertEquals(exampleTaskP2.hasCalled, false);
+        assertEquals(exampleTaskP1.hasCalled, false);
         t1.tick();
-        assertEquals(taskP2.hasCalled, true); //t3.tick() -> p2.tick()
-        assertEquals(taskP1.hasCalled, false);
+        assertEquals(exampleTaskP2.hasCalled, true); //t3.tick() -> p2.tick()
+        assertEquals(exampleTaskP1.hasCalled, false);
         t1.tick();
-        assertEquals(taskP1.hasCalled,true); //t2.tick() -> p1.tick()
+        assertEquals(exampleTaskP1.hasCalled,true); //t2.tick() -> p1.tick()
         //Reset the has called variable
-        taskP2.hasCalled = false;
-        taskP1.hasCalled = false;
+        exampleTaskP2.hasCalled = false;
+        exampleTaskP1.hasCalled = false;
         t1.tick();
-        assertEquals(taskP2.hasCalled, true); //t3.tick() -> p2.tick()
-        assertEquals(taskP1.hasCalled, false);
+        assertEquals(exampleTaskP2.hasCalled, true); //t3.tick() -> p2.tick()
+        assertEquals(exampleTaskP1.hasCalled, false);
         t1.tick();
-        assertEquals(taskP1.hasCalled, false);
+        assertEquals(exampleTaskP1.hasCalled, false);
         t1.tick();
-        assertEquals(taskP1.hasCalled, true); //t2.tick() -> p1.tick()
+        assertEquals(exampleTaskP1.hasCalled, true); //t2.tick() -> p1.tick()
     }
 }

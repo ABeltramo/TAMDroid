@@ -3,6 +3,7 @@ package com.tam;
 import android.app.Application;
 import android.test.ApplicationTestCase;
 import android.test.InstrumentationTestCase;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,19 +19,6 @@ import java.io.InputStream;
  */
 
 public class EngineTest extends InstrumentationTestCase {
-
-    /*
-     * Redefinition of PerformerTask
-     * if hasCalled = true -> the Performer has performed
-     */
-    class task extends PerformerTask{
-        public boolean hasCalled = false;
-
-        void perform() {
-            hasCalled = true;
-        }
-    }
-
     /*
      * setUp():
      * Open file and read JSON
@@ -62,11 +50,16 @@ public class EngineTest extends InstrumentationTestCase {
 
     public void testEngineCreation(){
         Exception ex = null;
+        Engine en;
         try{
-            Engine en = new Engine(null,fileObj);
+            en = new Engine(null,fileObj);
             Engine en2 = new Engine(null,simpleFile);
+            //Testing Timers creation
+            Timer gt = en.getGroundTimer(); //Getting ground timer
+            assertEquals(gt.getChild().size(),2);
         }
         catch (Exception e){
+            Log.e("testEngineCreation", e.getMessage());
             ex = e;
         }
         assertNull(ex); //I expect no exception were generated
@@ -115,5 +108,37 @@ public class EngineTest extends InstrumentationTestCase {
         }
         assertNotNull(ex);
 
+    }
+
+    public void testEngineRunning(){
+        Engine en;
+        Exception error = null;
+        try{
+            en = new Engine(null,fileObj);
+            //Scanning the tree to find the PerformerTask
+            Timer t1 = (Timer) en.getGroundTimer().getChild().get(0);
+            Timer t2 = (Timer) en.getGroundTimer().getChild().get(1);
+            Performer p1 = (Performer) t1.getChild().get(0);
+            Performer p2 = (Performer) t2.getChild().get(0);
+            ExampleTask pt1 = (ExampleTask) p1.getTask();
+            ExampleTask pt2 = (ExampleTask) p2.getTask();
+            //Found it! Now test if the tick make them called
+            assertEquals(pt1.hasCalled,false);
+            assertEquals(pt2.hasCalled,false);
+            en.start(); //Enable the Engine
+            en.tick();  //Manual engine trigger
+            assertEquals(pt1.hasCalled, true);      // Performer 1 launched
+            assertEquals(pt2.hasCalled, false);
+            pt1.hasCalled = false; //Reset pt1
+            en.tick();
+            assertEquals(pt1.hasCalled, true);      // Performer 1 launched
+            assertEquals(pt2.hasCalled, false);
+            en.tick();
+            assertEquals(pt2.hasCalled,true);       // Performer 2 launched
+        }
+        catch (Exception e){
+            error = e;
+        }
+        assertNull(error);
     }
 }
