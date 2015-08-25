@@ -29,9 +29,9 @@ public class TimeSensitiveTest extends ApplicationTestCase<Application> {
         t2 = new Timer(t1,3);
         t3 = new Timer(t1,2);
         exampleTaskP1 = new ExampleTask();
-        p1 = new Performer(t2, exampleTaskP1);
+        p1 = new Performer(t2, exampleTaskP1,null);
         exampleTaskP2 = new ExampleTask();
-        p2 = new Performer(t3, exampleTaskP2);
+        p2 = new Performer(t3, exampleTaskP2,null);
     }
 
     public void testTimeEntityHierarchy(){

@@ -9,14 +9,25 @@ package com.tam;
 
 public class Performer extends TimeSensitiveEntity {
     private PerformerTask task;
+    private Engine eng;
 
-    public Performer(Timer parent, PerformerTask task){
+    public Performer(Timer parent, PerformerTask task, Engine eng){
         super(parent);
         this.task = task;
+        this.eng = eng;
     }
 
     public void tick() {
-        if (isEnable()) { //Se il perf è abilitato
+        if (isEnable() && eng != null) {
+            eng.setPerfReady(this);
+        }
+        else if(isEnable()){ // If no engine were passed i'll run the task anyway
+            perform();
+        }
+    }
+
+    public void perform(){
+        if (isEnable() && task != null) {
             task.perform();
         }
     }

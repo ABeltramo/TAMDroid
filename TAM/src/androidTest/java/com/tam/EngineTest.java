@@ -1,9 +1,6 @@
 package com.tam;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
 import android.test.InstrumentationTestCase;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,7 +56,6 @@ public class EngineTest extends InstrumentationTestCase {
             assertEquals(gt.getChild().size(),2);
         }
         catch (Exception e){
-            Log.e("testEngineCreation", e.getMessage());
             ex = e;
         }
         assertNull(ex); //I expect no exception were generated

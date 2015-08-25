@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by ABeltramo <beltramo.ale@gmail.com> on 01/08/15.
  * The MIT License (MIT)
@@ -20,11 +22,13 @@ public class Engine extends TimeSensitiveEntity{
 
     private JSONObject options;
     private Timer groundTimer;
+    private ArrayList<Performer> readyQueue;
 
     Engine(Timer realTimer, JSONObject startOptions) throws Exception{
         super(realTimer);
         this.options = startOptions;
         this.disable(); //Engine start stopped
+        readyQueue = new ArrayList<>();
         setup();
     }
 
@@ -57,7 +61,7 @@ public class Engine extends TimeSensitiveEntity{
                 else if(obj.has("Performer")){ //Create a performer
                     obj = obj.getJSONObject("Performer");
                     PerformerTask t = (PerformerTask) Class.forName(obj.getString("taskClass")).newInstance();
-                    Performer p = new Performer(parent,t);
+                    Performer p = new Performer(parent,t,this);
                     //No recursion here.
                 }
                 else{
@@ -77,8 +81,16 @@ public class Engine extends TimeSensitiveEntity{
      * Tick
      */
     public void tick(){
-        if(isEnable())
-            groundTimer.tick(); //tick propagation
+        if(isEnable()) {
+            groundTimer.tick();         // tick propagation
+        }                               // Propagation of ticks end
+        for(Performer perf:readyQueue){ // Simple implementation
+            perf.perform();             // Just execute all the performer
+        }
+    }
+
+    protected void setPerfReady(Performer perf){
+        readyQueue.add(perf);           // Add the performer to the ready queue
     }
 
      /*
