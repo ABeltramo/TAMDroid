@@ -1,0 +1,16 @@
+{
+  "GroundTimer":{
+    "duration":1,
+    "child":
+    [{
+      "Timer":{
+        "duration":1,
+        "child":[{
+          "Performer":{
+            "taskClass":"com.app.toastTask",
+            "taskConstructorKey": "toast1"
+          }
+        }]}
+      }]
+  }
+}
