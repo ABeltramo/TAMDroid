@@ -7,7 +7,8 @@
         "duration":1,
         "child":[{
           "Performer":{
-            "taskClass":"com.tam.ExampleTask"
+            "taskClass":"com.tam.ExampleTask",
+            "taskConstructorKey": "Perf1"
           }
         }]}
       },
@@ -17,7 +18,8 @@
         "child" :
         [{
           "Performer":{
-              "taskClass":"com.tam.ExampleTask"
+              "taskClass":"com.tam.ExampleTask",
+              "taskConstructorKey": "Perf2"
             }
           },
           {

@@ -4,7 +4,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Map;
 
 /**
  * Created by ABeltramo <beltramo.ale@gmail.com> on 01/08/15.
@@ -23,11 +27,13 @@ public class Engine extends TimeSensitiveEntity{
     private JSONObject options;
     private Timer groundTimer;
     private ArrayList<Performer> readyQueue;
+    private Map<String,Object> constructors;
 
-    Engine(Timer realTimer, JSONObject startOptions) throws Exception{
+    public Engine(Timer realTimer, JSONObject startOptions, Map<String,Object> constructors) throws Exception{
         super(realTimer);
         this.options = startOptions;
         this.disable(); //Engine start stopped
+        this.constructors = constructors;
         readyQueue = new ArrayList<>();
         setup();
     }
@@ -60,7 +66,12 @@ public class Engine extends TimeSensitiveEntity{
                 }
                 else if(obj.has("Performer")){ //Create a performer
                     obj = obj.getJSONObject("Performer");
-                    PerformerTask t = (PerformerTask) Class.forName(obj.getString("taskClass")).newInstance();
+                    Constructor c = Class.forName(obj.getString("taskClass")).getConstructor(Object.class);
+                    PerformerTask t;
+                    if(constructors != null)
+                        t = (PerformerTask) c.newInstance(constructors.get(obj.getString("taskConstructorKey")));
+                    else
+                        t = (PerformerTask) c.newInstance(new Object());
                     Performer p = new Performer(parent,t,this);
                     //No recursion here.
                 }
@@ -72,7 +83,7 @@ public class Engine extends TimeSensitiveEntity{
         catch (JSONException error){
             throw new JSONBadFormed();
         }
-        catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             throw new PerformerTaskNotFound();
         }
     }

@@ -7,5 +7,15 @@ package com.tam;
  * https://raw.githubusercontent.com/ABeltramo/TAM-Android/master/LICENSE
  */
 public abstract class PerformerTask {
-    abstract void perform();
+    Object obj;
+
+    public PerformerTask(Object obj){
+        this.obj = obj;
+    }
+
+    public Object getObj(){
+        return obj;
+    }
+
+    public abstract void perform();
 }

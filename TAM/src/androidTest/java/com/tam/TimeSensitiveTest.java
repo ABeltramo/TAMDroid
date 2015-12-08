@@ -28,9 +28,9 @@ public class TimeSensitiveTest extends ApplicationTestCase<Application> {
         t1 = new Timer(null,1);
         t2 = new Timer(t1,3);
         t3 = new Timer(t1,2);
-        exampleTaskP1 = new ExampleTask();
+        exampleTaskP1 = new ExampleTask(null);
         p1 = new Performer(t2, exampleTaskP1,null);
-        exampleTaskP2 = new ExampleTask();
+        exampleTaskP2 = new ExampleTask(null);
         p2 = new Performer(t3, exampleTaskP2,null);
     }
 
