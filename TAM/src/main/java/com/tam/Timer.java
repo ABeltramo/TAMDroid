@@ -10,7 +10,7 @@ package com.tam;
 import java.util.ArrayList;
 
 public class Timer extends TimeSensitiveEntity{
-    private long duration;
+    protected long duration;
     protected long curCounter;
     protected ArrayList<TimeSensitiveEntity> child;
 

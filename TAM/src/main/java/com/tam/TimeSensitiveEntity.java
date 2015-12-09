@@ -8,7 +8,7 @@ package com.tam;
  */
 
 public abstract class TimeSensitiveEntity {
-    private boolean isEnabled = true;
+    protected boolean isEnabled = true;
     protected Timer parent;
 
 

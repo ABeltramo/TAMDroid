@@ -11,8 +11,8 @@ public class Clock extends Timer {
     /*
     * Constructor
     */
-    public Clock(Timer parent, long duration){
-        super(parent,duration);
+    public Clock(Timer parent){
+        super(parent,1);
     }
 
     /*
@@ -21,6 +21,9 @@ public class Clock extends Timer {
      */
     public void tick(){
         curCounter++;
+        for (TimeSensitiveEntity child : this.child) {  // Per ogni timer figlio
+            child.tick();                               // Eseguo il tick
+        }
     }
 
     public long getCurTick(){

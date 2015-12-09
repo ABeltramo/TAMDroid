@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.Map;
 
 /**
@@ -45,8 +44,8 @@ public class Engine extends TimeSensitiveEntity{
     private void setup() throws Exception{
         if (options == null)
             throw new JSONNullObject();
-        //Create the ground Timer
-        groundTimer = new Timer(getParent(),options.getJSONObject("GroundTimer").getLong("duration"));
+        groundTimer = new Timer(getParent(),options.getJSONObject("GroundTimer").getLong("duration")); //Create the fake ground Timer
+        groundTimer.disable();  //Start disabled
         createChild(groundTimer, options.getJSONObject("GroundTimer"));
     }
 
@@ -93,42 +92,52 @@ public class Engine extends TimeSensitiveEntity{
      */
     public void tick(){
         if(isEnable()) {
-            groundTimer.tick();         // tick propagation
-        }                               // Propagation of ticks end
-        for(Performer perf:readyQueue){ // Simple implementation
-            perf.perform();             // Just execute all the performer
+            groundTimer.tick();             // tick propagation
+            for(Performer perf:readyQueue){ // Simple implementation
+                perf.perform();             // Just execute all the performer
+            }
+            readyQueue.clear();             // Remove all the performer from the readyQueue
         }
     }
 
     protected void setPerfReady(Performer perf){
-        readyQueue.add(perf);           // Add the performer to the ready queue
+        readyQueue.add(perf);               // Add the performer to the ready queue
     }
 
      /*
       * basic control methods
       */
 
-    public void start(){ this.enable(); }
+    public void start(){
+        this.enable();
+        groundTimer.enable();
+    }
 
     public void stop(){
         this.pause();
         this.reset();
+        groundTimer.disable();
     }
 
-    public void pause(){ this.disable(); }
+    public void pause(){
+        this.disable();
+        groundTimer.disable();
+    }
 
     public void resume(){
         this.enable();
     }
 
-    public void reset(){
-        groundTimer.reset();
-    }
+    public void reset(){groundTimer.reset();}
 
     public void setSpeed(long speed){ groundTimer.setDuration(speed); }
-
     /*
      * Getter & setters
      */
-    public Timer getGroundTimer(){return groundTimer;}
+    public Timer getGroundTimer(){
+        if(parent != null)
+            return parent;
+        else
+            return groundTimer;
+    }
 }

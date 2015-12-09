@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by ABeltramo <beltramo.ale@gmail.com> on 07/08/15.

@@ -1,8 +1,7 @@
 package com.app;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -51,11 +50,13 @@ public class MainActivity extends AppCompatActivity {
             settings = new JSONObject(loadJSONFromAsset("sampleConfig.json"));
 
             HashMap constructors = new HashMap<String,Object>();
-            constructors.put("toast1",getApplicationContext());
-            tamEngine = new Engine(null,settings,constructors);
+            constructors.put("toast1",new Object[]{getApplicationContext(),"PF1 Eseguito"});
+            constructors.put("toast2",new Object[]{getApplicationContext(),"PF2 Eseguito"});
+            GroundTimerEx ground = new GroundTimerEx(new Handler());
+            tamEngine = new Engine(ground,settings,constructors);
         }
         catch(JSONException e){
-
+            Log.d("Exception", "onCreate: "+e.toString());
         }
         catch(Exception e){
             Log.d("Exception", "onCreate: "+e.toString());
@@ -65,13 +66,14 @@ public class MainActivity extends AppCompatActivity {
         final Button btnStart = (Button) findViewById(R.id.btnStart);
         btnStart.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                tamEngine.start(); //Enable the Engine
+                tamEngine.start();
             }
         });
 
         final Button btnTick = (Button) findViewById(R.id.btnTick);
         btnTick.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                tamEngine.enable();
                 tamEngine.tick();
             }
         });
@@ -83,5 +85,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 }

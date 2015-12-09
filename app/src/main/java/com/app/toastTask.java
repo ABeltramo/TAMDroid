@@ -1,7 +1,6 @@
 package com.app;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.tam.PerformerTask;
@@ -18,7 +17,9 @@ class toastTask extends PerformerTask {
     }
 
     public void perform() {
-        Context context = (Context) getObj();
-        Toast.makeText(context, "Performer eseguito!", Toast.LENGTH_SHORT).show();
+        Object[] array = (Object[]) getObj();
+        Context context = (Context) array[0];
+        String testo = (String) array[1];
+        Toast.makeText(context, testo, Toast.LENGTH_SHORT).show();
     }
 }

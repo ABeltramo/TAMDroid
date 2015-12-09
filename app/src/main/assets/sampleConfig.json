@@ -1,16 +1,39 @@
 {
-  "GroundTimer":{
-    "duration":1,
-    "child":
-    [{
-      "Timer":{
-        "duration":1,
-        "child":[{
-          "Performer":{
-            "taskClass":"com.app.toastTask",
-            "taskConstructorKey": "toast1"
-          }
-        }]}
-      }]
+  "GroundTimer": {
+    "duration": 1,
+    "child": [
+      {
+        "Timer": {
+          "duration": 2,
+          "child": [
+            {
+              "Performer": {
+                "taskClass": "com.app.toastTask",
+                "taskConstructorKey": "toast1"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Timer": {
+          "duration": 3,
+          "child": [
+            {
+              "Performer": {
+                "taskClass": "com.app.toastTask",
+                "taskConstructorKey": "toast2"
+              }
+            },
+            {
+              "Timer": {
+                "duration": 10,
+                "child": []
+              }
+            }
+          ]
+        }
+      }
+    ]
   }
 }
