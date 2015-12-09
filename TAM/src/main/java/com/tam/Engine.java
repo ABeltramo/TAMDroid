@@ -44,8 +44,7 @@ public class Engine extends TimeSensitiveEntity{
     private void setup() throws Exception{
         if (options == null)
             throw new JSONNullObject();
-        groundTimer = new Timer(getParent(),options.getJSONObject("GroundTimer").getLong("duration")); //Create the fake ground Timer
-        groundTimer.disable();  //Start disabled
+        groundTimer = new Timer(null,options.getJSONObject("GroundTimer").getLong("duration")); //Create the fake ground Timer
         createChild(groundTimer, options.getJSONObject("GroundTimer"));
     }
 
@@ -110,18 +109,15 @@ public class Engine extends TimeSensitiveEntity{
 
     public void start(){
         this.enable();
-        groundTimer.enable();
     }
 
     public void stop(){
         this.pause();
         this.reset();
-        groundTimer.disable();
     }
 
     public void pause(){
         this.disable();
-        groundTimer.disable();
     }
 
     public void resume(){

@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.tam.Engine;
 
@@ -50,8 +51,9 @@ public class MainActivity extends AppCompatActivity {
             settings = new JSONObject(loadJSONFromAsset("sampleConfig.json"));
 
             HashMap constructors = new HashMap<String,Object>();
-            constructors.put("toast1",new Object[]{getApplicationContext(),"PF1 Eseguito"});
-            constructors.put("toast2",new Object[]{getApplicationContext(),"PF2 Eseguito"});
+            constructors.put("p1",new Object[]{this,R.id.contatore1});
+            constructors.put("p2",new Object[]{this,R.id.contatore2});
+            constructors.put("p3",new Object[]{getApplicationContext(),"P3: 20 tick"});
             GroundTimerEx ground = new GroundTimerEx(new Handler());
             tamEngine = new Engine(ground,settings,constructors);
         }
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 tamEngine.enable();
                 tamEngine.tick();
+                tamEngine.disable();
             }
         });
 

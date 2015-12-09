@@ -4,12 +4,12 @@
     "child": [
       {
         "Timer": {
-          "duration": 2,
+          "duration": 1,
           "child": [
             {
               "Performer": {
-                "taskClass": "com.app.toastTask",
-                "taskConstructorKey": "toast1"
+                "taskClass": "com.app.updateVisualTask",
+                "taskConstructorKey": "p1"
               }
             }
           ]
@@ -17,18 +17,25 @@
       },
       {
         "Timer": {
-          "duration": 3,
+          "duration": 2,
           "child": [
             {
               "Performer": {
-                "taskClass": "com.app.toastTask",
-                "taskConstructorKey": "toast2"
+                "taskClass": "com.app.updateVisualTask",
+                "taskConstructorKey": "p2"
               }
             },
             {
               "Timer": {
                 "duration": 10,
-                "child": []
+                "child": [
+                  {
+                    "Performer": {
+                      "taskClass": "com.app.toastTask",
+                      "taskConstructorKey": "p3"
+                    }
+                  }
+                ]
               }
             }
           ]

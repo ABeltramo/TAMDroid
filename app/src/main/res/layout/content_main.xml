@@ -18,17 +18,15 @@
         android:layout_height="wrap_content"
         android:text="Start"
         android:id="@+id/btnStart"
-        android:layout_marginTop="66dp"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/btnTick" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tick"
         android:id="@+id/btnTick"
-        android:layout_marginTop="62dp"
-        android:layout_below="@+id/btnStart"
+        android:layout_alignTop="@+id/btnStop"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -36,6 +34,43 @@
         android:layout_height="wrap_content"
         android:text="Stop"
         android:id="@+id/btnStop"
-        android:layout_alignTop="@+id/btnStart"
-        android:layout_toEndOf="@+id/btnTick" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Performer 1"
+        android:id="@+id/textView"
+        android:layout_marginTop="77dp"
+        android:layout_below="@+id/btnStart"
+        android:layout_toEndOf="@+id/btnStart" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/contatore1"
+        android:layout_alignBottom="@+id/textView"
+        android:layout_alignEnd="@+id/btnTick" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Performer 2"
+        android:id="@+id/textView3"
+        android:layout_marginTop="51dp"
+        android:layout_below="@+id/contatore1"
+        android:layout_alignStart="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/contatore2"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_alignStart="@+id/contatore1" />
+
 </RelativeLayout>

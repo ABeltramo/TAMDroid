@@ -11,7 +11,7 @@ import com.tam.Clock;
  * https://raw.githubusercontent.com/ABeltramo/TAM-Android/master/LICENSE
  */
 public class GroundTimerEx extends Clock {
-    private final int interval = 5000; // 5 Second
+    private final int interval = 1000; // 1 Second
     private Handler handler;
     private Runnable runnable = new Runnable(){
         public void run() {
