@@ -165,4 +165,22 @@ public class EngineTest extends InstrumentationTestCase {
         }
         assertNull(error);
     }
+
+    public void testEngineGetCustomID(){
+        Engine en;
+        Exception error = null;
+        try {
+            en = new Engine(null, fileObj, null);
+            Timer t1 = (Timer) en.getEntityById("T1");
+            assertEquals(1,t1.getDuration());
+            Timer t2 = (Timer) en.getEntityById("T2");
+            assertEquals(3,t2.getDuration());
+            Timer t3 = (Timer) en.getEntityById("T3");
+            assertEquals(10,t3.getDuration());
+        }
+        catch (Exception e){
+            error = e;
+        }
+        assertNull(error);
+    }
 }

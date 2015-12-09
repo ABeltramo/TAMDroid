@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Created by ABeltramo <beltramo.ale@gmail.com> on 01/08/15.
@@ -23,18 +23,24 @@ public class Engine extends TimeSensitiveEntity{
     public class JSONBadFormed extends RuntimeException{}
     public class PerformerTaskNotFound extends RuntimeException{}
 
-    private JSONObject options;
+    private JSONObject options;                                 // Startup JSON object with Objects definitions
     private Timer groundTimer;
-    private ArrayList<Performer> readyQueue;
-    private Map<String,Object> constructors;
+    private ArrayList<Performer> readyQueue;                    // Queue of performers ready to be executed
+    private HashMap<String,Object> constructors;                    // Map that contain objects to be passed to Performer
+    private HashMap<String,TimeSensitiveEntity> timeEntities;   // Map of currently allocated Time entities
 
-    public Engine(Timer realTimer, JSONObject startOptions, Map<String,Object> constructors) throws Exception{
+    /*
+     * Constructor:
+     * Create the Engine class.
+     */
+    public Engine(Timer realTimer, JSONObject startOptions, HashMap<String,Object> constructors) throws Exception{
         super(realTimer);
+        this.disable();  // Engine start disabled this prevent early tick() from real timer
         this.options = startOptions;
-        this.disable(); //Engine start stopped
         this.constructors = constructors;
         readyQueue = new ArrayList<>();
-        setup();
+        timeEntities = new HashMap<String,TimeSensitiveEntity>();
+        setup();        // Read the JSON options
     }
 
     /*
@@ -55,14 +61,23 @@ public class Engine extends TimeSensitiveEntity{
     private void createChild(Timer parent,JSONObject currentTimer){
         try{
             JSONArray child = currentTimer.getJSONArray("child");
-            for(int i=0;i<child.length();i++){ //Iterate through child
+            for(int i=0;i<child.length();i++){          //Iterate through child
                 JSONObject obj = child.getJSONObject(i);
-                if(obj.has("Timer")){   //Create a timer
+                if(obj.has("Timer")){                   //Create a timer
                     obj = obj.getJSONObject("Timer");
                     Timer t = new Timer(parent,obj.getLong("duration"));
-                    createChild(t,obj); //Recursive step
+                    if(obj.has("ID"))
+                        timeEntities.put(obj.getString("ID"),t);
+                    createChild(t,obj);                 //Recursive step
                 }
-                else if(obj.has("Performer")){ //Create a performer
+                else if(obj.has("Clock")){              //Create a clock
+                    obj = obj.getJSONObject("Clock");
+                    Clock c = new Clock(parent);
+                    if(obj.has("ID"))
+                        timeEntities.put(obj.getString("ID"),c);
+                    createChild(c,obj);                 //Recursive step
+                }
+                else if(obj.has("Performer")){          //Create a performer
                     obj = obj.getJSONObject("Performer");
                     Constructor c = Class.forName(obj.getString("taskClass")).getConstructor(Object.class);
                     PerformerTask t;
@@ -71,7 +86,9 @@ public class Engine extends TimeSensitiveEntity{
                     else
                         t = (PerformerTask) c.newInstance(new Object());
                     Performer p = new Performer(parent,t,this);
-                    //No recursion here.
+                    if(obj.has("ID"))
+                        timeEntities.put(obj.getString("ID"),p);
+                    //No recursion here. Performer's can't have childs
                 }
                 else{
                     throw new JSONBadFormed();
@@ -93,7 +110,7 @@ public class Engine extends TimeSensitiveEntity{
         if(isEnable()) {
             groundTimer.tick();             // tick propagation
             for(Performer perf:readyQueue){ // Simple implementation
-                perf.perform();             // Just execute all the performer
+                perf.perform();             // Just execute all the performer ready
             }
             readyQueue.clear();             // Remove all the performer from the readyQueue
         }
@@ -106,7 +123,6 @@ public class Engine extends TimeSensitiveEntity{
      /*
       * basic control methods
       */
-
     public void start(){
         this.enable();
     }
@@ -124,9 +140,14 @@ public class Engine extends TimeSensitiveEntity{
         this.enable();
     }
 
-    public void reset(){groundTimer.reset();}
+    public void reset(){
+        groundTimer.reset();
+    }
 
-    public void setSpeed(long speed){ groundTimer.setDuration(speed); }
+    public void setSpeed(long speed){
+        groundTimer.setDuration(speed);
+    }
+
     /*
      * Getter & setters
      */
@@ -135,5 +156,9 @@ public class Engine extends TimeSensitiveEntity{
             return parent;
         else
             return groundTimer;
+    }
+
+    public TimeSensitiveEntity getEntityById(String ID){
+        return timeEntities.get(ID);
     }
 }

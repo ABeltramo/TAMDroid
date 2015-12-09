@@ -1,34 +1,43 @@
 {
-  "GroundTimer":{
-    "duration":1,
-    "child":
-    [{
-      "Timer":{
-        "duration":1,
-        "child":[{
-          "Performer":{
-            "taskClass":"com.tam.ExampleTask",
-            "taskConstructorKey": "Perf1"
-          }
-        }]}
+  "GroundTimer": {
+    "duration": 1,
+    "child": [
+      {
+        "Timer": {
+          "ID": "T1",
+          "duration": 1,
+          "child": [
+            {
+              "Performer": {
+                "ID": "P1",
+                "taskClass": "com.tam.ExampleTask",
+                "taskConstructorKey": "Perf1"
+              }
+            }
+          ]
+        }
       },
       {
-        "Timer":{
-        "duration" : 3,
-        "child" :
-        [{
-          "Performer":{
-              "taskClass":"com.tam.ExampleTask",
-              "taskConstructorKey": "Perf2"
+        "Timer": {
+          "ID": "T2",
+          "duration": 3,
+          "child": [
+            {
+              "Performer": {
+                "ID": "P2",
+                "taskClass": "com.tam.ExampleTask",
+                "taskConstructorKey": "Perf2"
+              }
+            },
+            {
+              "Timer": {
+                "ID": "T3",
+                "duration": 10,
+                "child": []
+              }
             }
-          },
-          {
-            "Timer": {
-              "duration": 10,
-              "child": []
-            }
-          }
-        ]}
+          ]
+        }
       }
     ]
   }
