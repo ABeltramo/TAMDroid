@@ -4,10 +4,12 @@
     "child": [
       {
         "Timer": {
+          "ID": "T1",
           "duration": 1,
           "child": [
             {
               "Performer": {
+                "ID": "P1",
                 "taskClass": "com.app.updateVisualTask",
                 "taskConstructorKey": "p1"
               }
@@ -17,20 +19,24 @@
       },
       {
         "Timer": {
+          "ID": "T2",
           "duration": 2,
           "child": [
             {
               "Performer": {
+                "ID": "P2",
                 "taskClass": "com.app.updateVisualTask",
                 "taskConstructorKey": "p2"
               }
             },
             {
               "Timer": {
+                "ID": "T3",
                 "duration": 10,
                 "child": [
                   {
                     "Performer": {
+                      "ID": "P3",
                       "taskClass": "com.app.toastTask",
                       "taskConstructorKey": "p3"
                     }
