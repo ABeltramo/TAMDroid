@@ -1,4 +1,4 @@
-TAM - Time Aware Machine
+TAM - Time Aware Machine [![Build Status](https://travis-ci.org/ABeltramo/TAMDroid.svg?branch=master)](https://travis-ci.org/ABeltramo/TAMDroid)
 ==========
 
 Il progetto consiste nella creazione di un Framework per agevolare lo sviluppo di applicazioni che necessitano di una cognizione di tempo.  
