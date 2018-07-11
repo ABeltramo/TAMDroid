@@ -1,15 +1,15 @@
 TAM - Time Aware Machine [![Build Status](https://travis-ci.org/ABeltramo/TAMDroid.svg?branch=master)](https://travis-ci.org/ABeltramo/TAMDroid) [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg)](https://opensource.org/licenses/MIT)
 ==========
 
-Il progetto consiste nella creazione di un Framework per agevolare lo sviluppo di applicazioni che necessitano di una cognizione di tempo.  
-TAM espone un’API per la definizione di “azioni” (Performer) e di “cronometri” (Timer, Clock). Allo scadere di un cronometro questo attiverà altri cronometri collegati ad esso e/o delle azioni da eseguire.
+Time Aware Machine (TAM) is an Android object-oriented framework which simplifies the development of time aware applications (you can learn more [here](http://www.sal.disco.unimib.it/technologies/tam/).  
 
-Utilizzo
+How to use
 -------
 
-Il progetto contiene già due test suite e un applicazione di esempio che possono essere consultate per avere un'idea di come utilizzare il framework.  
+The project contains already two test suite and one test application that you should see before starting.  
 
-Per definire il comportamento del framework è necessario innanzitutto scrivere un documento JSON valido. Un esempio è il seguente:
+To define the behaviour of the framework it is necessary to write a valid JSON document, like the following one:
+
 ```json
 {
   "GroundTimer": {
@@ -64,20 +64,21 @@ Per definire il comportamento del framework è necessario innanzitutto scrivere 
   }
 }
 ```
-La struttura è facilmente visualizzabile come un albero dove le foglie sono **Performer** ed i nodi sono **Timer** o **Clock**.  
-La radice dell'albero è sempre un **GroundTimer** il quale può avere una durata variabile come qualsiasi Timer.  
-Per i **Performer** è necessario definire quale classe ridefinisce PerformerTask e se necessario una chiave che definisce quale costruttore deve essere passato alla creazione di questo oggetto.
 
-Una volta definito il file JSON è necessario istanziare l'Engine il quale si occuperà della definizione dell'ambiente e della gestione dei Timer,Clock e Performer.
+You can easily visualize the structure as a Tree where the leafs are **Performers** and the nodes ar **Timers** or **Clocks**.  
+
+The root of the Tree is always a **GroundTimer** which can have a variable duration as any other Timer. For the **Performers** it is necessary to define which class is redefining **PerformerTask** and, if necessary, a key that represent which constructor needs to be passed at the creation of this object.
+
+Once definited the JSON file it's necessary to instantiate the **Engine** class which will be in charge of the definition of the environment and the managment of Timers, Clocks and Performers.
 ```java
 settings = new JSONObject(loadJSONFromAsset("sampleConfig.json"));
 tamEngine = new Engine(null,settings,null);
 ```
-Engine riceve tre parametri:
-* **Timer realTimer**: Un timer esterno il quale esegue tick() ad ogni quanto di tempo reale
-* **JSONObject startOptions**: Un oggetto contenente un JSON valido come l'esempio precedente.
-* **HashMap<String,Object> constructors**: [opzionale] Una mappa che definisce quali oggetti devono essere passati come costruttore delle PerformerTask da istanziare.
-Segue un esempio più completo di istanziazione di un Engine.
+Engine gets three parameters:
+* **Timer realTimer**: An external timer which executes *tick()* with some interval.
+* **JSONObject startOptions**: A JSON representation of the environment (just like the example before).
+* **HashMap<String,Object> constructors**: [optional] A map that defines which objects must be passed as constructor of the different PerformerTasks.
+The following is a more complete example of the creation of the Engine.
 
 ```java
 settings = new JSONObject(loadJSONFromAsset("sampleConfig.json"));
@@ -88,7 +89,7 @@ constructors.put("p3",new Object[]{getApplicationContext(),"P3: 20 tick"});
 GroundTimerEx ground = new GroundTimerEx(new Handler());
 tamEngine = new Engine(ground,settings,constructors);
 ```
-Crediti
+Credits
 -------
 *Developed by: ABeltramo <[beltramo.ale@gmail.com](beltramo.ale@gmail.com)>*
 	
