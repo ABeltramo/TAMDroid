@@ -1,7 +1,7 @@
 TAM - Time Aware Machine [![Build Status](https://travis-ci.org/ABeltramo/TAMDroid.svg?branch=master)](https://travis-ci.org/ABeltramo/TAMDroid) [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg)](https://opensource.org/licenses/MIT)
 ==========
 
-Time Aware Machine (TAM) is an Android object-oriented framework which simplifies the development of time aware applications (you can learn more [here](http://www.sal.disco.unimib.it/technologies/tam/).  
+Time Aware Machine (TAM) is an Android object-oriented framework which simplifies the development of time aware applications (you can learn more [here](http://www.sal.disco.unimib.it/technologies/tam/)).  
 
 How to use
 -------
